@@ -1,3 +1,4 @@
+import com.natpryce.hamkrest.absent
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.jupiter.api.Test
@@ -27,6 +28,17 @@ class OrdersBookTest {
         assertThat(orderBook.get(order), equalTo(order))
     }
 
+    @Test
+    fun `cancel an order`() {
+        val orderBook = OrdersBook()
+        val order = Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())
+        orderBook.registerOrder(order)
+        assertThat(orderBook.get(order), equalTo(order))
+
+        assertThat(orderBook.cancelOrder(order), equalTo(true))
+        assertThat(orderBook.get(order), absent())
+    }
+
     sealed class Order {
         data class Buy(
             val userId: Int,
@@ -43,7 +55,6 @@ class OrdersBookTest {
         ) : Order()
     }
 
-
 }
 
 class OrdersBook {
@@ -53,7 +64,11 @@ class OrdersBook {
         return orders.add(order)
     }
 
-    fun get(order: OrdersBookTest.Order.Sell): OrdersBookTest.Order? {
+    fun get(order: OrdersBookTest.Order): OrdersBookTest.Order? {
         return orders.find { it == order }
+    }
+
+    fun cancelOrder(order: OrdersBookTest.Order): Boolean {
+        return orders.remove(order)
     }
 }
