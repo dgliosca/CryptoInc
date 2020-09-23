@@ -2,6 +2,7 @@ package inc.crypto
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import inc.crypto.Currency.Companion.GBP
 import org.junit.jupiter.api.Test
 
 class LiveOrderBoardTest {
@@ -9,7 +10,7 @@ class LiveOrderBoardTest {
     @Test
     fun `can register an order`() {
         val board = LiveOrderBoard()
-        val order = Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())
+        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, 10.20.toBigDecimal()))
 
         assertThat(board.register(order), equalTo(true))
     }
@@ -17,7 +18,7 @@ class LiveOrderBoardTest {
     @Test
     fun `cancel an order`() {
         val board = LiveOrderBoard()
-        val order = Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())
+        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, 10.20.toBigDecimal()))
         board.register(order)
 
         assertThat(board.cancel(order), equalTo(true))
@@ -34,5 +35,4 @@ class LiveOrderBoard {
     fun cancel(order: Order) : Boolean {
         return ordersBook.cancelOrder(order)
     }
-
 }

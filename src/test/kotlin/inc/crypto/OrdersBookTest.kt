@@ -3,6 +3,7 @@ package inc.crypto
 import com.natpryce.hamkrest.absent
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import inc.crypto.Currency.Companion.GBP
 import org.junit.jupiter.api.Test
 
 class OrdersBookTest {
@@ -11,19 +12,19 @@ class OrdersBookTest {
     fun `can register a buy order`() {
         val orderBook = OrdersBook()
 
-        assertThat(orderBook.registerOrder(Order.Buy(1, "Bitcoin", 1, 10.20.toBigDecimal())), equalTo(true))
+        assertThat(orderBook.registerOrder(Order.Buy(1, "Bitcoin", 1, Money(GBP, 10.20.toBigDecimal()))), equalTo(true))
     }
 
     @Test
     fun `can register a sell order`() {
         val orderBook = OrdersBook()
-        assertThat(orderBook.registerOrder(Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())), equalTo(true))
+        assertThat(orderBook.registerOrder(Order.Sell(1, "Bitcoin", 1, Money(GBP, 10.20.toBigDecimal()))), equalTo(true))
     }
 
     @Test
     fun `retrieve an order`() {
         val orderBook = OrdersBook()
-        val order = Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())
+        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, 10.20.toBigDecimal()))
         orderBook.registerOrder(order)
 
         assertThat(orderBook.get(order), equalTo(order))
@@ -32,7 +33,7 @@ class OrdersBookTest {
     @Test
     fun `cancel an order`() {
         val orderBook = OrdersBook()
-        val order = Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())
+        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, 10.20.toBigDecimal()))
         orderBook.registerOrder(order)
 
         assertThat(orderBook.get(order), equalTo(order))
@@ -43,7 +44,7 @@ class OrdersBookTest {
     @Test
     fun `cancel an order that does not exist`() {
         val orderBook = OrdersBook()
-        val order = Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())
+        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, 10.20.toBigDecimal()))
 
         assertThat(orderBook.cancelOrder(order), equalTo(false))
     }
