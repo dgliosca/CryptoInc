@@ -13,6 +13,15 @@ class LiveOrderBoardTest {
 
         assertThat(board.register(order), equalTo(true))
     }
+
+    @Test
+    fun `cancel an order`() {
+        val board = LiveOrderBoard()
+        val order = Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())
+        board.register(order)
+
+        assertThat(board.cancel(order), equalTo(true))
+    }
 }
 
 class LiveOrderBoard {
@@ -20,6 +29,10 @@ class LiveOrderBoard {
 
     fun register(order: Order): Boolean {
         return ordersBook.registerOrder(order)
+    }
+
+    fun cancel(order: Order) : Boolean {
+        return ordersBook.cancelOrder(order)
     }
 
 }
