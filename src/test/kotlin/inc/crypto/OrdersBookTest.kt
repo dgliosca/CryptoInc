@@ -40,5 +40,13 @@ class OrdersBookTest {
         assertThat(orderBook.get(order), absent())
     }
 
+    @Test
+    fun `cancel an order that does not exist`() {
+        val orderBook = OrdersBook()
+        val order = Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())
+
+        assertThat(orderBook.cancelOrder(order), equalTo(false))
+    }
+
 }
 
