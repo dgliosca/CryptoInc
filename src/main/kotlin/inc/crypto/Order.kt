@@ -18,9 +18,13 @@ sealed class Order {
     ) : Order()
 }
 
-data class Money(val currency: Currency, val amount: BigDecimal)
+data class Money(val currency: Currency, val amount: CurrencyAmount)
 data class Currency(val iso4217Code: String) {
     companion object {
         val GBP = Currency("GBP")
     }
+}
+
+data class CurrencyAmount(val amount: BigDecimal) {
+    constructor(amount: String) : this(amount.toBigDecimal())
 }
