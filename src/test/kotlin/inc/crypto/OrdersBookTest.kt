@@ -13,7 +13,7 @@ class OrdersBookTest {
         val orderBook = OrdersBook()
 
         assertThat(
-            orderBook.registerOrder(Order.Buy(1, "Bitcoin", 1, Money(GBP, CurrencyAmount("10.20")))),
+            orderBook.registerOrder(Order.Buy(1, "Bitcoin", Quantity("1"), Money(GBP, CurrencyAmount("10.20")))),
             equalTo(true)
         )
     }
@@ -22,7 +22,7 @@ class OrdersBookTest {
     fun `can register a sell order`() {
         val orderBook = OrdersBook()
         assertThat(
-            orderBook.registerOrder(Order.Sell(1, "Bitcoin", 1, Money(GBP, CurrencyAmount("10.20")))),
+            orderBook.registerOrder(Order.Sell(1, "Bitcoin", Quantity("1"), Money(GBP, CurrencyAmount("10.20")))),
             equalTo(true)
         )
     }
@@ -30,7 +30,7 @@ class OrdersBookTest {
     @Test
     fun `retrieve an order`() {
         val orderBook = OrdersBook()
-        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, CurrencyAmount("10.20")))
+        val order = Order.Sell(1, "Bitcoin", Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
         orderBook.registerOrder(order)
 
         assertThat(orderBook.get(order), equalTo(order))
@@ -39,7 +39,7 @@ class OrdersBookTest {
     @Test
     fun `cancel an order`() {
         val orderBook = OrdersBook()
-        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, CurrencyAmount("10.20")))
+        val order = Order.Sell(1, "Bitcoin", Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
         orderBook.registerOrder(order)
 
         assertThat(orderBook.get(order), equalTo(order))
@@ -50,7 +50,7 @@ class OrdersBookTest {
     @Test
     fun `cancel an order that does not exist`() {
         val orderBook = OrdersBook()
-        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, CurrencyAmount("10.20")))
+        val order = Order.Sell(1, "Bitcoin", Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
 
         assertThat(orderBook.cancelOrder(order), equalTo(false))
     }

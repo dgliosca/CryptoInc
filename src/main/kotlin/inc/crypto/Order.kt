@@ -6,14 +6,14 @@ sealed class Order {
     data class Buy(
         val userId: Int,
         val coinType: String,
-        val orderQuantity: Int,
+        val orderQuantity: Quantity,
         val pricePerCoin: Money
     ) : Order()
 
     data class Sell(
         val userId: Int,
         val coinType: String,
-        val orderQuantity: Int,
+        val orderQuantity: Quantity,
         val pricePerCoin: Money
     ) : Order()
 }
@@ -27,4 +27,8 @@ data class Currency(val iso4217Code: String) {
 
 data class CurrencyAmount(val amount: BigDecimal) {
     constructor(amount: String) : this(amount.toBigDecimal())
+}
+
+data class Quantity(val quantity: BigDecimal) {
+    constructor(quantity: String) : this(quantity.toBigDecimal())
 }

@@ -10,7 +10,7 @@ class LiveOrderBoardTest {
     @Test
     fun `can register an order`() {
         val board = LiveOrderBoard()
-        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, CurrencyAmount("10.20")))
+        val order = Order.Sell(1, "Bitcoin", Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
 
         assertThat(board.register(order), equalTo(true))
     }
@@ -18,7 +18,7 @@ class LiveOrderBoardTest {
     @Test
     fun `cancel an order`() {
         val board = LiveOrderBoard()
-        val order = Order.Sell(1, "Bitcoin", 1, Money(GBP, CurrencyAmount("10.20")))
+        val order = Order.Sell(1, "Bitcoin", Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
         board.register(order)
 
         assertThat(board.cancel(order), equalTo(true))
