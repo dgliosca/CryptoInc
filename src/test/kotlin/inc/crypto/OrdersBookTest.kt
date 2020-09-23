@@ -34,8 +34,8 @@ class OrdersBookTest {
         val orderBook = OrdersBook()
         val order = Order.Sell(1, "Bitcoin", 1, 10.20.toBigDecimal())
         orderBook.registerOrder(order)
-        assertThat(orderBook.get(order), equalTo(order))
 
+        assertThat(orderBook.get(order), equalTo(order))
         assertThat(orderBook.cancelOrder(order), equalTo(true))
         assertThat(orderBook.get(order), absent())
     }
