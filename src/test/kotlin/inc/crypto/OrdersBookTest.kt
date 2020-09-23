@@ -1,8 +1,9 @@
+package inc.crypto
+
 import com.natpryce.hamkrest.absent
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
 
 class OrdersBookTest {
 
@@ -39,36 +40,5 @@ class OrdersBookTest {
         assertThat(orderBook.get(order), absent())
     }
 
-    sealed class Order {
-        data class Buy(
-            val userId: Int,
-            val coinType: String,
-            val orderQuantity: Int,
-            val pricePerCoin: BigDecimal
-        ) : Order()
-
-        data class Sell(
-            val userId: Int,
-            val coinType: String,
-            val orderQuantity: Int,
-            val pricePerCoin: BigDecimal
-        ) : Order()
-    }
-
 }
 
-class OrdersBook {
-    private val orders = mutableListOf<OrdersBookTest.Order>()
-
-    fun registerOrder(order: OrdersBookTest.Order): Boolean {
-        return orders.add(order)
-    }
-
-    fun get(order: OrdersBookTest.Order): OrdersBookTest.Order? {
-        return orders.find { it == order }
-    }
-
-    fun cancelOrder(order: OrdersBookTest.Order): Boolean {
-        return orders.remove(order)
-    }
-}
