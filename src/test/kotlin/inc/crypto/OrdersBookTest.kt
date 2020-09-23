@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class OrdersBookTest {
 
     @Test
-    fun `can register an buy order`() {
+    fun `can register a buy order`() {
         val orderBook = OrdersBook()
 
         assertThat(orderBook.registerOrder(Order.Buy(1, "Bitcoin", 1, 10.20.toBigDecimal())), equalTo(true))
