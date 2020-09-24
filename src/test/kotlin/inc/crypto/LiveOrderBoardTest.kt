@@ -46,16 +46,16 @@ class LiveOrderBoardTest {
     }
 
     @Test
-    fun `summary order by descending price for sell orders`() {
+    fun `summary order by ascending price for sell orders`() {
         val board = LiveOrderBoard()
-        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
         board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
+        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
 
         assertThat(
             board.summary(), equalTo(
                 listOf(
-                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
-                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0")))
+                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
+                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0")))
                 ),
             )
 
@@ -72,7 +72,7 @@ class LiveOrderBoard {
     fun cancel(order: Order) = ordersBook.cancelOrder(order)
 
     fun summary() =
-        ordersBook.orders().map { it.aggregatedOrder() }.sortedByDescending { it.money }
+        ordersBook.orders().map { it.aggregatedOrder() }.sortedBy { it.money }
 
     private fun Order.aggregatedOrder() =
         when (this) {
