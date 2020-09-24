@@ -45,6 +45,23 @@ class LiveOrderBoardTest {
         )
     }
 
+    @Test
+    fun `summary order by descending price for sell orders`() {
+        val board = LiveOrderBoard()
+        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
+        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
+
+        assertThat(
+            board.summary(), equalTo(
+                listOf(
+                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
+                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0")))
+                ),
+            )
+
+        )
+    }
+
 }
 
 class LiveOrderBoard {
@@ -59,27 +76,24 @@ class LiveOrderBoard {
     }
 
     fun summary(): List<AggregatedOrder> {
-        return ordersBook.orders().map { order ->
-            when (order) {
-                is Order.Buy -> BuyOrders(
-                    order.coinType,
-                    order.orderQuantity,
-                    order.pricePerCoin
-                )
-                is Order.Sell -> SellOrders(
-                    order.coinType,
-                    order.orderQuantity,
-                    order.pricePerCoin
-                )
+        return ordersBook.orders().map {
+            when (it) {
+                is Order.Buy -> BuyOrders(it.coinType, it.orderQuantity, it.pricePerCoin)
+                is Order.Sell -> SellOrders(it.coinType, it.orderQuantity, it.pricePerCoin)
             }
-        }
+        }.sortedByDescending { it.money.amount.amount }
     }
 
-    sealed class AggregatedOrder {
-        data class BuyOrders(val coinType: CoinType, val quantity: Quantity, val money: Money) :
-            AggregatedOrder()
-
-        data class SellOrders(val coinType: CoinType, val quantity: Quantity, val money: Money) :
-            AggregatedOrder()
+    sealed class AggregatedOrder(open val coinType: CoinType, open val quantity: Quantity, open val money: Money) {
+        data class BuyOrders(override val coinType: CoinType, override val quantity: Quantity, override val money: Money) : AggregatedOrder(
+            coinType,
+            quantity,
+            money
+        )
+        data class SellOrders(override val coinType: CoinType, override val quantity: Quantity, override val money: Money) : AggregatedOrder(
+            coinType,
+            quantity,
+            money,
+        )
     }
 }
