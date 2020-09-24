@@ -14,4 +14,6 @@ class OrdersBook {
     fun cancelOrder(order: Order): Boolean {
         return orders.remove(order)
     }
+
+    fun orders(): List<Order> = orders
 }
