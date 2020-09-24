@@ -76,21 +76,31 @@ class LiveOrderBoard {
     }
 
     fun summary(): List<AggregatedOrder> {
-        return ordersBook.orders().map {
-            when (it) {
-                is Order.Buy -> BuyOrders(it.coinType, it.orderQuantity, it.pricePerCoin)
-                is Order.Sell -> SellOrders(it.coinType, it.orderQuantity, it.pricePerCoin)
-            }
-        }.sortedByDescending { it.money }
+        return ordersBook.orders().map { it.aggregatedOrder() }.sortedByDescending { it.money }
     }
 
+    private fun Order.aggregatedOrder() =
+        when (this) {
+            is Order.Buy -> BuyOrders(coinType, orderQuantity, pricePerCoin)
+            is Order.Sell -> SellOrders(coinType, orderQuantity, pricePerCoin)
+        }
+
     sealed class AggregatedOrder(open val coinType: CoinType, open val quantity: Quantity, open val money: Money) {
-        data class BuyOrders(override val coinType: CoinType, override val quantity: Quantity, override val money: Money) : AggregatedOrder(
+        data class BuyOrders(
+            override val coinType: CoinType,
+            override val quantity: Quantity,
+            override val money: Money
+        ) : AggregatedOrder(
             coinType,
             quantity,
             money
         )
-        data class SellOrders(override val coinType: CoinType, override val quantity: Quantity, override val money: Money) : AggregatedOrder(
+
+        data class SellOrders(
+            override val coinType: CoinType,
+            override val quantity: Quantity,
+            override val money: Money
+        ) : AggregatedOrder(
             coinType,
             quantity,
             money,
