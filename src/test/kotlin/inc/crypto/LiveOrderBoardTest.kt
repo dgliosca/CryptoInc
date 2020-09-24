@@ -81,7 +81,7 @@ class LiveOrderBoard {
                 is Order.Buy -> BuyOrders(it.coinType, it.orderQuantity, it.pricePerCoin)
                 is Order.Sell -> SellOrders(it.coinType, it.orderQuantity, it.pricePerCoin)
             }
-        }.sortedByDescending { it.money.amount.amount }
+        }.sortedByDescending { it.money }
     }
 
     sealed class AggregatedOrder(open val coinType: CoinType, open val quantity: Quantity, open val money: Money) {
