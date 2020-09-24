@@ -62,6 +62,26 @@ class LiveOrderBoardTest {
         )
     }
 
+    @Test
+    fun `buy orders sorted in descending order and sell order sorted in descending order`() {
+        val board = LiveOrderBoard()
+        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
+        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
+        board.register(Order.Buy(1, Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("20.0"))))
+        board.register(Order.Buy(1, Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("30.0"))))
+
+        assertThat(
+            board.summary(), equalTo(
+                listOf(
+                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
+                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
+                    BuyOrders(Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("30.0"))),
+                    BuyOrders(Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("20.0")))
+                ),
+            )
+        )
+    }
+
 }
 
 class LiveOrderBoard {
@@ -71,8 +91,12 @@ class LiveOrderBoard {
 
     fun cancel(order: Order) = ordersBook.cancelOrder(order)
 
-    fun summary() =
-        ordersBook.orders().map { it.aggregatedOrder() }.sortedBy { it.money }
+    fun summary(): List<AggregatedOrder> {
+        val partition = ordersBook.orders().map { it.aggregatedOrder() }.partition { it is BuyOrders }
+        val sellOrders = partition.second.sortedBy { it.money }
+        val buyOrders = partition.first.sortedByDescending { it.money }
+        return sellOrders + buyOrders
+    }
 
     private fun Order.aggregatedOrder() =
         when (this) {
