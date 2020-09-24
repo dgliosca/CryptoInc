@@ -67,17 +67,12 @@ class LiveOrderBoardTest {
 class LiveOrderBoard {
     private val ordersBook = OrdersBook()
 
-    fun register(order: Order): Boolean {
-        return ordersBook.registerOrder(order)
-    }
+    fun register(order: Order) = ordersBook.registerOrder(order)
 
-    fun cancel(order: Order): Boolean {
-        return ordersBook.cancelOrder(order)
-    }
+    fun cancel(order: Order) = ordersBook.cancelOrder(order)
 
-    fun summary(): List<AggregatedOrder> {
-        return ordersBook.orders().map { it.aggregatedOrder() }.sortedByDescending { it.money }
-    }
+    fun summary() =
+        ordersBook.orders().map { it.aggregatedOrder() }.sortedByDescending { it.money }
 
     private fun Order.aggregatedOrder() =
         when (this) {
