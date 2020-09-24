@@ -23,6 +23,7 @@ are from different users). In this case it can be seen that order a) and d) were
 and this is why only their sum (353.6) is displayed (for £13.6) and not the individual orders (350.1 and
 3.5).The last thing to note is that for SELL orders the orders with lowest prices are displayed first.
 Opposite is true for the BUY orders.
+
 Please provide the implementation of the live order board which will be packaged and shipped as a library
 to be used by the UI team. No database or UI/WEB is needed for this assignment (we're absolutely fine
 with in memory solution). The only important thing is that you just write it according to your normal

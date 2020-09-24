@@ -5,14 +5,14 @@ import java.math.BigDecimal
 sealed class Order {
     data class Buy(
         val userId: Int,
-        val coinType: String,
+        val coinType: CoinType,
         val orderQuantity: Quantity,
         val pricePerCoin: Money
     ) : Order()
 
     data class Sell(
         val userId: Int,
-        val coinType: String,
+        val coinType: CoinType,
         val orderQuantity: Quantity,
         val pricePerCoin: Money
     ) : Order()
