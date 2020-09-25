@@ -36,7 +36,7 @@ class LiveOrderBoardTest {
         board.register(Order.Buy(1, Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))))
 
         assertThat(
-            board.summary(), hasTheSameElementsAs(
+            board.sellSummary(), hasTheSameElementsAs(
                 listOf(
                     SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))),
                     BuyOrders(Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))),
@@ -52,7 +52,7 @@ class LiveOrderBoardTest {
         board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
 
         assertThat(
-            board.summary(), equalTo(
+            board.sellSummary(), equalTo(
                 listOf(
                     SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
                     SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0")))
@@ -63,20 +63,16 @@ class LiveOrderBoardTest {
     }
 
     @Test
-    fun `buy orders sorted in descending order and sell order sorted in descending order`() {
+    fun `sell orders sorted in descending order`() {
         val board = LiveOrderBoard()
         board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
         board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
-        board.register(Order.Buy(1, Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("20.0"))))
-        board.register(Order.Buy(1, Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("30.0"))))
 
         assertThat(
-            board.summary(), equalTo(
+            board.sellSummary(), equalTo(
                 listOf(
                     SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
                     SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
-                    BuyOrders(Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("30.0"))),
-                    BuyOrders(Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("20.0")))
                 ),
             )
         )
@@ -91,11 +87,11 @@ class LiveOrderBoard {
 
     fun cancel(order: Order) = ordersBook.cancelOrder(order)
 
-    fun summary(): List<AggregatedOrder> {
-        val partition = ordersBook.orders().map { it.aggregatedOrder() }.partition { it is BuyOrders }
-        val sellOrders = partition.second.sortedBy { it.money }
-        val buyOrders = partition.first.sortedByDescending { it.money }
-        return sellOrders + buyOrders
+    fun sellSummary(): List<AggregatedOrder> {
+        return ordersBook.orders()
+            .filterIsInstance<Order.Sell>()
+            .map { it.aggregatedOrder() }
+            .sortedBy { it.money }
     }
 
     private fun Order.aggregatedOrder() =
