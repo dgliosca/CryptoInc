@@ -7,9 +7,9 @@ class LiveOrderBoard {
 
     fun cancel(order: Order) = ordersBook.cancelOrder(order)
 
-    fun sellSummary() = aggregateOrders<Order.Sell>().sortedBy { it.money }
+    fun sellSummary() = aggregateOrders<Order.Sell>().sortedBy { it.money }.take(10)
 
-    fun buySummary() = aggregateOrders<Order.Buy>().sortedByDescending { it.money }
+    fun buySummary() = aggregateOrders<Order.Buy>().sortedByDescending { it.money }.take(10)
 
     private fun Order.toAggregatedOrder() =
         when (this) {

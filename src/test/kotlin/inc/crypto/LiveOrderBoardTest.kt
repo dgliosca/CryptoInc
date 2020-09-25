@@ -114,5 +114,28 @@ class LiveOrderBoardTest {
             )
         )
     }
+
+    @Test
+    fun `can show just first 10 results`() {
+        val board = LiveOrderBoard()
+        (1..20).forEach{ i -> board.register(Order.Sell(1 + i, Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("$i"))))}
+
+        assertThat(
+            board.sellSummary(), equalTo(
+                listOf(
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("1"))),
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("2"))),
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("3"))),
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("4"))),
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("5"))),
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("6"))),
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("7"))),
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("8"))),
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("9"))),
+                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("10")))
+                )
+            )
+        )
+    }
 }
 
