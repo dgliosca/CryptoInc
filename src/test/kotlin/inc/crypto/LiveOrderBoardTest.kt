@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 class LiveOrderBoardTest {
 
     @Test
-    fun `can register an order`() {
+    fun `can place an order`() {
         val board = LiveOrderBoard()
         val order = Order.Sell(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
 

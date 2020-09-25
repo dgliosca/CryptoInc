@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 class OrdersBookTest {
 
     @Test
-    fun `can register a buy order`() {
+    fun `can place a buy order`() {
         val orderBook = OrdersBook()
 
         assertThat(
@@ -24,7 +24,7 @@ class OrdersBookTest {
     }
 
     @Test
-    fun `can register a sell order`() {
+    fun `can place a sell order`() {
         val orderBook = OrdersBook()
         assertThat(
             orderBook.place(Order.Sell(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))),

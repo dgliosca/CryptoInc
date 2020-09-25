@@ -31,3 +31,9 @@ standards.
 NOTE: if during your implementation you'll find that something could be designed in multiple different
 ways, just implement the one which seems most reasonable to you and if you could provide a short (once
 sentence) reasoning why you choose this way and not another one, it would be great
+
+
+Consideration/Assumptions
+The solution assumes that we are not dealing with tons of data (millions of orders) hence, we can calculate the 
+summary of buying/selling orders on the fly.
+An improved solution can be updating the buying/selling summary whenever an order gets booked or canceled.
