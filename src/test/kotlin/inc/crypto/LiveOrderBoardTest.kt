@@ -7,7 +7,6 @@ import inc.crypto.CoinType.Ethereum
 import inc.crypto.Currency.Companion.GBP
 import inc.crypto.LiveOrderBoard.AggregatedOrder.BuyOrders
 import inc.crypto.LiveOrderBoard.AggregatedOrder.SellOrders
-import inc.crypto.testing.hasTheSameElementsAs
 import org.junit.jupiter.api.Test
 
 class LiveOrderBoardTest {
@@ -125,28 +124,25 @@ class LiveOrderBoard {
     fun cancel(order: Order) = ordersBook.cancelOrder(order)
 
     fun sellSummary(): List<AggregatedOrder> {
-        return ordersBook.orders()
-            .filterIsInstance<Order.Sell>()
-            .map { it.aggregatedOrder() }
-            .groupBy { it.money }
-            .map { (_, orders) -> orders.reduce { acc, aggregatedOrder -> acc + aggregatedOrder } }
-            .sortedBy { it.money }
+        return aggregateOrders<Order.Sell>().sortedBy { it.money }
     }
 
-    private fun Order.aggregatedOrder() =
+    fun buySummary(): List<AggregatedOrder> {
+        return aggregateOrders<Order.Buy>().sortedByDescending { it.money }
+    }
+
+    private fun Order.toAggregatedOrder() =
         when (this) {
             is Order.Buy -> BuyOrders(coinType, orderQuantity, pricePerCoin)
             is Order.Sell -> SellOrders(coinType, orderQuantity, pricePerCoin)
         }
 
-    fun buySummary(): List<AggregatedOrder> {
-        return ordersBook.orders()
-            .filterIsInstance<Order.Buy>()
-            .map { it.aggregatedOrder() }
+    private inline fun <reified T : Order> aggregateOrders() =
+        ordersBook.orders()
+            .filterIsInstance<T>()
+            .map { it.toAggregatedOrder() }
             .groupBy { it.money }
             .map { (_, orders) -> orders.reduce { acc, aggregatedOrder -> acc + aggregatedOrder } }
-            .sortedByDescending { it.money }
-    }
 
     sealed class AggregatedOrder(open val coinType: CoinType, open val quantity: Quantity, open val money: Money) {
         data class BuyOrders(
