@@ -19,10 +19,12 @@ class LiveOrderBoard {
 
     private inline fun <reified T : Order> aggregateOrders(limit: Int = 10) =
         ordersBook.orders()
+            .asSequence()
             .filterIsInstance<T>()
             .map { it.toAggregatedOrder() }
             .groupBy { it.money }
             .map { (_, orders) -> orders.reduce { acc, aggregatedOrder -> acc + aggregatedOrder } }
             .take(limit)
+            .toList()
 
 }
