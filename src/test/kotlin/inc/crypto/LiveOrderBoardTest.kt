@@ -2,15 +2,10 @@ package inc.crypto
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import inc.crypto.domain.*
 import inc.crypto.domain.CoinType.Bitcoin
 import inc.crypto.domain.CoinType.Ethereum
 import inc.crypto.domain.Currency.Companion.GBP
-import inc.crypto.domain.AggregatedOrder.BuyOrders
-import inc.crypto.domain.AggregatedOrder.SellOrders
-import inc.crypto.domain.CurrencyAmount
-import inc.crypto.domain.Money
-import inc.crypto.domain.Order
-import inc.crypto.domain.Quantity
 import org.junit.jupiter.api.Test
 
 class LiveOrderBoardTest {
@@ -41,8 +36,8 @@ class LiveOrderBoardTest {
         assertThat(
             board.sellOrdersSummary(), equalTo(
                 listOf(
-                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
-                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0")))
+                    AggregatedOrder(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
+                    AggregatedOrder(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0")))
                 ),
             )
 
@@ -58,8 +53,8 @@ class LiveOrderBoardTest {
         assertThat(
             board.sellOrdersSummary(), equalTo(
                 listOf(
-                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
-                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
+                    AggregatedOrder(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
+                    AggregatedOrder(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
                 ),
             )
         )
@@ -74,8 +69,8 @@ class LiveOrderBoardTest {
         assertThat(
             board.buyOrdersSummary(), equalTo(
                 listOf(
-                    BuyOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
-                    BuyOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0")))
+                    AggregatedOrder(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
+                    AggregatedOrder(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0")))
                 )
             )
         )
@@ -92,9 +87,9 @@ class LiveOrderBoardTest {
         assertThat(
             board.sellOrdersSummary(), equalTo(
                 listOf(
-                    SellOrders(Ethereum, Quantity("353.6"), Money(GBP, CurrencyAmount("13.6"))),
-                    SellOrders(Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))),
-                    SellOrders(Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14")))
+                    AggregatedOrder(Ethereum, Quantity("353.6"), Money(GBP, CurrencyAmount("13.6"))),
+                    AggregatedOrder(Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))),
+                    AggregatedOrder(Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14")))
                 )
             )
         )
@@ -111,9 +106,9 @@ class LiveOrderBoardTest {
         assertThat(
             board.buyOrdersSummary(), equalTo(
                 listOf(
-                    BuyOrders(Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))),
-                    BuyOrders(Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))),
-                    BuyOrders(Ethereum, Quantity("353.6"), Money(GBP, CurrencyAmount("13.6")))
+                    AggregatedOrder(Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))),
+                    AggregatedOrder(Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))),
+                    AggregatedOrder(Ethereum, Quantity("353.6"), Money(GBP, CurrencyAmount("13.6")))
                 )
             )
         )
@@ -127,16 +122,16 @@ class LiveOrderBoardTest {
         assertThat(
             board.sellOrdersSummary(), equalTo(
                 listOf(
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("1"))),
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("2"))),
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("3"))),
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("4"))),
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("5"))),
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("6"))),
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("7"))),
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("8"))),
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("9"))),
-                    SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("10")))
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("1"))),
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("2"))),
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("3"))),
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("4"))),
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("5"))),
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("6"))),
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("7"))),
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("8"))),
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("9"))),
+                    AggregatedOrder(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("10")))
                 )
             )
         )
