@@ -1,5 +1,7 @@
 package inc.crypto
 
+import inc.crypto.Order.*
+
 class LiveOrderBoard {
     private val ordersBook = OrdersBook()
 
@@ -7,14 +9,14 @@ class LiveOrderBoard {
 
     fun cancel(order: Order) = ordersBook.cancelOrder(order)
 
-    fun sellSummary() = aggregateOrders<Order.Sell>().sortedBy { it.money }
+    fun sellSummary() = aggregateOrders<Sell>().sortedBy { it.money }
 
-    fun buySummary() = aggregateOrders<Order.Buy>().sortedByDescending { it.money }
+    fun buySummary() = aggregateOrders<Buy>().sortedByDescending { it.money }
 
     private fun Order.toAggregatedOrder() =
         when (this) {
-            is Order.Buy -> AggregatedOrder.BuyOrders(coinType, orderQuantity, pricePerCoin)
-            is Order.Sell -> AggregatedOrder.SellOrders(coinType, orderQuantity, pricePerCoin)
+            is Buy -> AggregatedOrder.BuyOrders(coinType, orderQuantity, pricePerCoin)
+            is Sell -> AggregatedOrder.SellOrders(coinType, orderQuantity, pricePerCoin)
         }
 
     private inline fun <reified T : Order> aggregateOrders(limit: Int = 10) =
