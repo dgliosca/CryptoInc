@@ -18,7 +18,7 @@ class OrdersBookTest {
         val orderBook = OrdersBook()
 
         assertThat(
-            orderBook.registerOrder(Order.Buy(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))),
+            orderBook.place(Order.Buy(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))),
             equalTo(true)
         )
     }
@@ -27,7 +27,7 @@ class OrdersBookTest {
     fun `can register a sell order`() {
         val orderBook = OrdersBook()
         assertThat(
-            orderBook.registerOrder(Order.Sell(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))),
+            orderBook.place(Order.Sell(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))),
             equalTo(true)
         )
     }
@@ -36,7 +36,7 @@ class OrdersBookTest {
     fun `retrieve an order`() {
         val orderBook = OrdersBook()
         val order = Order.Sell(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
-        orderBook.registerOrder(order)
+        orderBook.place(order)
 
         assertThat(orderBook.get(order), equalTo(order))
     }
@@ -45,7 +45,7 @@ class OrdersBookTest {
     fun `cancel an order`() {
         val orderBook = OrdersBook()
         val order = Order.Sell(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
-        orderBook.registerOrder(order)
+        orderBook.place(order)
 
         assertThat(orderBook.get(order), equalTo(order))
         assertThat(orderBook.cancelOrder(order), equalTo(true))

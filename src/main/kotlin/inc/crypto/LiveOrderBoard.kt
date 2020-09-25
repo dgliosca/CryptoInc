@@ -8,7 +8,7 @@ import inc.crypto.domain.Order.Buy
 class LiveOrderBoard {
     private val ordersBook = OrdersBook()
 
-    fun register(order: Order) = ordersBook.registerOrder(order)
+    fun place(order: Order) = ordersBook.place(order)
 
     fun cancel(order: Order) = ordersBook.cancelOrder(order)
 

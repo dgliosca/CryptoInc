@@ -20,14 +20,14 @@ class LiveOrderBoardTest {
         val board = LiveOrderBoard()
         val order = Order.Sell(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
 
-        assertThat(board.register(order), equalTo(true))
+        assertThat(board.place(order), equalTo(true))
     }
 
     @Test
     fun `cancel an order`() {
         val board = LiveOrderBoard()
         val order = Order.Sell(1, Bitcoin, Quantity("1"), Money(GBP, CurrencyAmount("10.20")))
-        board.register(order)
+        board.place(order)
 
         assertThat(board.cancel(order), equalTo(true))
     }
@@ -35,8 +35,8 @@ class LiveOrderBoardTest {
     @Test
     fun `summary order by ascending price for sell orders`() {
         val board = LiveOrderBoard()
-        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
-        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
+        board.place(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
+        board.place(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
 
         assertThat(
             board.sellSummary(), equalTo(
@@ -52,8 +52,8 @@ class LiveOrderBoardTest {
     @Test
     fun `sell orders sorted in descending order`() {
         val board = LiveOrderBoard()
-        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
-        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
+        board.place(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
+        board.place(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
 
         assertThat(
             board.sellSummary(), equalTo(
@@ -68,8 +68,8 @@ class LiveOrderBoardTest {
     @Test
     fun `buy orders sorted in ascending order`() {
         val board = LiveOrderBoard()
-        board.register(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
-        board.register(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
+        board.place(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
+        board.place(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
 
         assertThat(
             board.buySummary(), equalTo(
@@ -84,10 +84,10 @@ class LiveOrderBoardTest {
     @Test
     fun `aggregate sell orders with the same price`() {
         val board = LiveOrderBoard()
-        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))))
-        board.register(Order.Sell(2, Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))))
-        board.register(Order.Sell(3, Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))))
-        board.register(Order.Sell(4, Ethereum, Quantity("3.5"), Money(GBP, CurrencyAmount("13.6"))))
+        board.place(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))))
+        board.place(Order.Sell(2, Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))))
+        board.place(Order.Sell(3, Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))))
+        board.place(Order.Sell(4, Ethereum, Quantity("3.5"), Money(GBP, CurrencyAmount("13.6"))))
 
         assertThat(
             board.sellSummary(), equalTo(
@@ -103,10 +103,10 @@ class LiveOrderBoardTest {
     @Test
     fun `aggregate buy orders with the same price`() {
         val board = LiveOrderBoard()
-        board.register(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))))
-        board.register(Order.Buy(2, Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))))
-        board.register(Order.Buy(3, Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))))
-        board.register(Order.Buy(4, Ethereum, Quantity("3.5"), Money(GBP, CurrencyAmount("13.6"))))
+        board.place(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))))
+        board.place(Order.Buy(2, Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))))
+        board.place(Order.Buy(3, Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))))
+        board.place(Order.Buy(4, Ethereum, Quantity("3.5"), Money(GBP, CurrencyAmount("13.6"))))
 
         assertThat(
             board.buySummary(), equalTo(
@@ -122,7 +122,7 @@ class LiveOrderBoardTest {
     @Test
     fun `can show just first 10 results`() {
         val board = LiveOrderBoard()
-        (1..20).forEach{ i -> board.register(Order.Sell(1 + i, Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("$i"))))}
+        (1..20).forEach{ i -> board.place(Order.Sell(1 + i, Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("$i"))))}
 
         assertThat(
             board.sellSummary(), equalTo(

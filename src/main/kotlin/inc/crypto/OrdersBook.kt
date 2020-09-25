@@ -5,7 +5,7 @@ import inc.crypto.domain.Order
 class OrdersBook {
     private val orders = mutableListOf<Order>()
 
-    fun registerOrder(order: Order) = orders.add(order)
+    fun place(order: Order) = orders.add(order)
 
     fun get(order: Order) = orders.find { it == order }
 
