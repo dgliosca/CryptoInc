@@ -30,22 +30,6 @@ class LiveOrderBoardTest {
     }
 
     @Test
-    fun `can get a summary order`() {
-        val board = LiveOrderBoard()
-        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))))
-        board.register(Order.Buy(1, Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))))
-
-        assertThat(
-            board.sellSummary(), hasTheSameElementsAs(
-                listOf(
-                    SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))),
-                    BuyOrders(Bitcoin, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))),
-                )
-            )
-        )
-    }
-
-    @Test
     fun `summary order by ascending price for sell orders`() {
         val board = LiveOrderBoard()
         board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
