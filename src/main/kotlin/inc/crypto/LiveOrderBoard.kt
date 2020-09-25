@@ -16,11 +16,7 @@ class LiveOrderBoard {
 
     fun buyOrdersSummary(): List<AggregatedOrder> = aggregateOrders<Buy>().sortedByDescending { it.money }
 
-    private fun Order.toAggregatedOrder() =
-        when (this) {
-            is Buy -> AggregatedOrder(coinType, orderQuantity, pricePerCoin)
-            is Sell -> AggregatedOrder(coinType, orderQuantity, pricePerCoin)
-        }
+    private fun Order.toAggregatedOrder() = AggregatedOrder(coinType, orderQuantity, pricePerCoin)
 
     private inline fun <reified T : Order> aggregateOrders(limit: Int = 10) =
         ordersBook.orders()

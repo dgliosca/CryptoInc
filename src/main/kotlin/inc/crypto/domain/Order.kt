@@ -2,20 +2,25 @@ package inc.crypto.domain
 
 import java.math.BigDecimal
 
-sealed class Order {
+sealed class Order(
+    open val userId: Int,
+    open val coinType: CoinType,
+    open val orderQuantity: Quantity,
+    open val pricePerCoin: Money
+) {
     data class Buy(
-        val userId: Int,
-        val coinType: CoinType,
-        val orderQuantity: Quantity,
-        val pricePerCoin: Money
-    ) : Order()
+        override val userId: Int,
+        override val coinType: CoinType,
+        override val orderQuantity: Quantity,
+        override val pricePerCoin: Money
+    ) : Order(userId, coinType, orderQuantity, pricePerCoin)
 
     data class Sell(
-        val userId: Int,
-        val coinType: CoinType,
-        val orderQuantity: Quantity,
-        val pricePerCoin: Money
-    ) : Order()
+        override val userId: Int,
+        override val coinType: CoinType,
+        override val orderQuantity: Quantity,
+        override val pricePerCoin: Money
+    ) : Order(userId, coinType, orderQuantity, pricePerCoin)
 }
 
 data class Money(val currency: Currency, val amount: CurrencyAmount) : Comparable<Money> {
@@ -35,5 +40,5 @@ data class CurrencyAmount(val amount: BigDecimal) {
 data class Quantity(val quantity: BigDecimal) {
     constructor(quantity: String) : this(quantity.toBigDecimal())
 
-    operator fun plus(other: Quantity)  = Quantity(this.quantity + other.quantity)
+    operator fun plus(other: Quantity) = Quantity(this.quantity + other.quantity)
 }
