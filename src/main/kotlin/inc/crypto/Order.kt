@@ -34,4 +34,6 @@ data class CurrencyAmount(val amount: BigDecimal) {
 
 data class Quantity(val quantity: BigDecimal) {
     constructor(quantity: String) : this(quantity.toBigDecimal())
+
+    operator fun plus(other: Quantity)  = Quantity(this.quantity + other.quantity)
 }

@@ -78,6 +78,24 @@ class LiveOrderBoardTest {
         )
     }
 
+    @Test
+    fun `aggregate sell orders with the same price`() {
+        val board = LiveOrderBoard()
+        board.register(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))))
+        board.register(Order.Sell(2, Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))))
+        board.register(Order.Sell(3, Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))))
+        board.register(Order.Sell(4, Ethereum, Quantity("3.5"), Money(GBP, CurrencyAmount("13.6"))))
+
+        assertThat(
+            board.sellSummary(), equalTo(
+                listOf(
+                    SellOrders(Ethereum, Quantity("353.6"), Money(GBP, CurrencyAmount("13.6"))),
+                    SellOrders(Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))),
+                    SellOrders(Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14")))
+                )
+            )
+        )
+    }
 }
 
 class LiveOrderBoard {
@@ -91,6 +109,8 @@ class LiveOrderBoard {
         return ordersBook.orders()
             .filterIsInstance<Order.Sell>()
             .map { it.aggregatedOrder() }
+            .groupBy { it.money }
+            .map { (_, orders) -> orders.reduce { acc, aggregatedOrder -> acc + aggregatedOrder } }
             .sortedBy { it.money }
     }
 
@@ -127,5 +147,20 @@ class LiveOrderBoard {
             quantity,
             money,
         )
+
+        operator fun plus(other: AggregatedOrder): AggregatedOrder {
+            return when {
+                this.coinType != other.coinType -> {
+                    throw IllegalArgumentException("Cannot sum orders with different coin type: $coinType vs ${other.coinType}")
+                }
+                this.money != other.money -> {
+                    throw IllegalArgumentException("Cannot sum orders with different money type: $money vs ${other.money}")
+                }
+                else -> when (this) {
+                    is BuyOrders -> this.copy(quantity = this.quantity + other.quantity)
+                    is SellOrders -> this.copy(quantity = this.quantity + other.quantity)
+                }
+            }
+        }
     }
 }
