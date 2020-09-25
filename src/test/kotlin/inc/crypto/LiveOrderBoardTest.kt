@@ -78,6 +78,22 @@ class LiveOrderBoardTest {
         )
     }
 
+    @Test
+    fun `buy orders sorted in ascending order`() {
+        val board = LiveOrderBoard()
+        board.register(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
+        board.register(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
+
+        assertThat(
+            board.buySummary(), equalTo(
+                listOf(
+                    BuyOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
+                    BuyOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0")))
+                )
+            )
+        )
+    }
+
 }
 
 class LiveOrderBoard {
@@ -99,6 +115,13 @@ class LiveOrderBoard {
             is Order.Buy -> BuyOrders(coinType, orderQuantity, pricePerCoin)
             is Order.Sell -> SellOrders(coinType, orderQuantity, pricePerCoin)
         }
+
+    fun buySummary(): List<AggregatedOrder> {
+        return ordersBook.orders()
+            .filterIsInstance<Order.Buy>()
+            .map { it.aggregatedOrder() }
+            .sortedByDescending { it.money }
+    }
 
     sealed class AggregatedOrder(open val coinType: CoinType, open val quantity: Quantity, open val money: Money) {
         data class BuyOrders(
