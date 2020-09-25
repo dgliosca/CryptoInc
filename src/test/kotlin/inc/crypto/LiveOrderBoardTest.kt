@@ -65,8 +65,8 @@ class LiveOrderBoardTest {
     @Test
     fun `buy orders sorted in ascending order`() {
         val board = LiveOrderBoard()
-        board.register(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
         board.register(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
+        board.register(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
 
         assertThat(
             board.buySummary(), equalTo(
