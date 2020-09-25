@@ -3,7 +3,7 @@ package inc.crypto
 import com.natpryce.hamkrest.absent
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import inc.crypto.CoinType.*
+import inc.crypto.CoinType.Bitcoin
 import inc.crypto.Currency.Companion.GBP
 import org.junit.jupiter.api.Test
 
