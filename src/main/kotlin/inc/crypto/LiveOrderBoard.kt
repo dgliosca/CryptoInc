@@ -12,9 +12,9 @@ class LiveOrderBoard {
 
     fun cancel(order: Order) = ordersBook.cancelOrder(order)
 
-    fun sellOrdersSummary(): List<AggregatedOrder> = aggregateOrders<Sell>().sortedBy { it.money }
+    fun sellOrdersSummary() = aggregateOrders<Sell>().sortedBy { it.money }
 
-    fun buyOrdersSummary(): List<AggregatedOrder> = aggregateOrders<Buy>().sortedByDescending { it.money }
+    fun buyOrdersSummary() = aggregateOrders<Buy>().sortedByDescending { it.money }
 
     private fun Order.toAggregatedOrder() = AggregatedOrder(coinType, orderQuantity, pricePerCoin)
 
