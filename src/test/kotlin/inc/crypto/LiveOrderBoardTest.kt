@@ -5,8 +5,8 @@ import com.natpryce.hamkrest.equalTo
 import inc.crypto.CoinType.Bitcoin
 import inc.crypto.CoinType.Ethereum
 import inc.crypto.Currency.Companion.GBP
-import inc.crypto.LiveOrderBoard.AggregatedOrder.BuyOrders
-import inc.crypto.LiveOrderBoard.AggregatedOrder.SellOrders
+import inc.crypto.AggregatedOrder.BuyOrders
+import inc.crypto.AggregatedOrder.SellOrders
 import org.junit.jupiter.api.Test
 
 class LiveOrderBoardTest {
@@ -140,40 +140,4 @@ class LiveOrderBoard {
             .groupBy { it.money }
             .map { (_, orders) -> orders.reduce { acc, aggregatedOrder -> acc + aggregatedOrder } }
 
-    sealed class AggregatedOrder(open val coinType: CoinType, open val quantity: Quantity, open val money: Money) {
-        data class BuyOrders(
-            override val coinType: CoinType,
-            override val quantity: Quantity,
-            override val money: Money
-        ) : AggregatedOrder(
-            coinType,
-            quantity,
-            money
-        )
-
-        data class SellOrders(
-            override val coinType: CoinType,
-            override val quantity: Quantity,
-            override val money: Money
-        ) : AggregatedOrder(
-            coinType,
-            quantity,
-            money,
-        )
-
-        operator fun plus(other: AggregatedOrder): AggregatedOrder {
-            return when {
-                this.coinType != other.coinType -> {
-                    throw IllegalArgumentException("Cannot sum orders with different coin type: $coinType vs ${other.coinType}")
-                }
-                this.money != other.money -> {
-                    throw IllegalArgumentException("Cannot sum orders with different money type: $money vs ${other.money}")
-                }
-                else -> when (this) {
-                    is BuyOrders -> this.copy(quantity = this.quantity + other.quantity)
-                    is SellOrders -> this.copy(quantity = this.quantity + other.quantity)
-                }
-            }
-        }
-    }
 }
