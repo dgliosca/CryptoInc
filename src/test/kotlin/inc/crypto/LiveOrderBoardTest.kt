@@ -96,6 +96,25 @@ class LiveOrderBoardTest {
             )
         )
     }
+
+    @Test
+    fun `aggregate buy orders with the same price`() {
+        val board = LiveOrderBoard()
+        board.register(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("13.6"))))
+        board.register(Order.Buy(2, Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))))
+        board.register(Order.Buy(3, Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))))
+        board.register(Order.Buy(4, Ethereum, Quantity("3.5"), Money(GBP, CurrencyAmount("13.6"))))
+
+        assertThat(
+            board.buySummary(), equalTo(
+                listOf(
+                    BuyOrders(Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))),
+                    BuyOrders(Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))),
+                    BuyOrders(Ethereum, Quantity("353.6"), Money(GBP, CurrencyAmount("13.6")))
+                )
+            )
+        )
+    }
 }
 
 class LiveOrderBoard {
@@ -124,6 +143,8 @@ class LiveOrderBoard {
         return ordersBook.orders()
             .filterIsInstance<Order.Buy>()
             .map { it.aggregatedOrder() }
+            .groupBy { it.money }
+            .map { (_, orders) -> orders.reduce { acc, aggregatedOrder -> acc + aggregatedOrder } }
             .sortedByDescending { it.money }
     }
 
