@@ -39,7 +39,7 @@ class LiveOrderBoardTest {
         board.place(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
 
         assertThat(
-            board.sellSummary(), equalTo(
+            board.sellOrdersSummary(), equalTo(
                 listOf(
                     SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
                     SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0")))
@@ -56,7 +56,7 @@ class LiveOrderBoardTest {
         board.place(Order.Sell(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))))
 
         assertThat(
-            board.sellSummary(), equalTo(
+            board.sellOrdersSummary(), equalTo(
                 listOf(
                     SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0"))),
                     SellOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
@@ -72,7 +72,7 @@ class LiveOrderBoardTest {
         board.place(Order.Buy(1, Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))))
 
         assertThat(
-            board.buySummary(), equalTo(
+            board.buyOrdersSummary(), equalTo(
                 listOf(
                     BuyOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("10.0"))),
                     BuyOrders(Ethereum, Quantity("350.1"), Money(GBP, CurrencyAmount("5.0")))
@@ -90,7 +90,7 @@ class LiveOrderBoardTest {
         board.place(Order.Sell(4, Ethereum, Quantity("3.5"), Money(GBP, CurrencyAmount("13.6"))))
 
         assertThat(
-            board.sellSummary(), equalTo(
+            board.sellOrdersSummary(), equalTo(
                 listOf(
                     SellOrders(Ethereum, Quantity("353.6"), Money(GBP, CurrencyAmount("13.6"))),
                     SellOrders(Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))),
@@ -109,7 +109,7 @@ class LiveOrderBoardTest {
         board.place(Order.Buy(4, Ethereum, Quantity("3.5"), Money(GBP, CurrencyAmount("13.6"))))
 
         assertThat(
-            board.buySummary(), equalTo(
+            board.buyOrdersSummary(), equalTo(
                 listOf(
                     BuyOrders(Ethereum, Quantity("50.5"), Money(GBP, CurrencyAmount("14"))),
                     BuyOrders(Ethereum, Quantity("441.8"), Money(GBP, CurrencyAmount("13.9"))),
@@ -125,7 +125,7 @@ class LiveOrderBoardTest {
         (1..20).forEach{ i -> board.place(Order.Sell(1 + i, Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("$i"))))}
 
         assertThat(
-            board.sellSummary(), equalTo(
+            board.sellOrdersSummary(), equalTo(
                 listOf(
                     SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("1"))),
                     SellOrders(Ethereum, Quantity("1"), Money(GBP, CurrencyAmount("2"))),
