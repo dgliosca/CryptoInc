@@ -7,9 +7,9 @@ class LiveOrderBoard {
 
     fun cancel(order: Order) = ordersBook.cancelOrder(order)
 
-    fun sellSummary() = aggregateOrders<Order.Sell>().sortedBy { it.money }.take(10)
+    fun sellSummary() = aggregateOrders<Order.Sell>().sortedBy { it.money }
 
-    fun buySummary() = aggregateOrders<Order.Buy>().sortedByDescending { it.money }.take(10)
+    fun buySummary() = aggregateOrders<Order.Buy>().sortedByDescending { it.money }
 
     private fun Order.toAggregatedOrder() =
         when (this) {
@@ -17,11 +17,12 @@ class LiveOrderBoard {
             is Order.Sell -> AggregatedOrder.SellOrders(coinType, orderQuantity, pricePerCoin)
         }
 
-    private inline fun <reified T : Order> aggregateOrders() =
+    private inline fun <reified T : Order> aggregateOrders(limit: Int = 10) =
         ordersBook.orders()
             .filterIsInstance<T>()
             .map { it.toAggregatedOrder() }
             .groupBy { it.money }
             .map { (_, orders) -> orders.reduce { acc, aggregatedOrder -> acc + aggregatedOrder } }
+            .take(limit)
 
 }
