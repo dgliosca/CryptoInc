@@ -2,11 +2,15 @@ package inc.crypto
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import inc.crypto.CoinType.Bitcoin
-import inc.crypto.CoinType.Ethereum
-import inc.crypto.Currency.Companion.GBP
-import inc.crypto.AggregatedOrder.BuyOrders
-import inc.crypto.AggregatedOrder.SellOrders
+import inc.crypto.domain.CoinType.Bitcoin
+import inc.crypto.domain.CoinType.Ethereum
+import inc.crypto.domain.Currency.Companion.GBP
+import inc.crypto.domain.AggregatedOrder.BuyOrders
+import inc.crypto.domain.AggregatedOrder.SellOrders
+import inc.crypto.domain.CurrencyAmount
+import inc.crypto.domain.Money
+import inc.crypto.domain.Order
+import inc.crypto.domain.Quantity
 import org.junit.jupiter.api.Test
 
 class LiveOrderBoardTest {

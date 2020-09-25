@@ -1,4 +1,4 @@
-package inc.crypto
+package inc.crypto.domain
 
 import java.math.BigDecimal
 

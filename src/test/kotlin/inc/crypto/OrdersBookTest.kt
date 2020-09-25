@@ -3,8 +3,12 @@ package inc.crypto
 import com.natpryce.hamkrest.absent
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import inc.crypto.CoinType.Bitcoin
-import inc.crypto.Currency.Companion.GBP
+import inc.crypto.domain.CoinType.Bitcoin
+import inc.crypto.domain.Currency.Companion.GBP
+import inc.crypto.domain.CurrencyAmount
+import inc.crypto.domain.Money
+import inc.crypto.domain.Order
+import inc.crypto.domain.Quantity
 import org.junit.jupiter.api.Test
 
 class OrdersBookTest {

@@ -1,7 +1,9 @@
 package inc.crypto
 
-import inc.crypto.Order.Sell
-import inc.crypto.Order.Buy
+import inc.crypto.domain.AggregatedOrder
+import inc.crypto.domain.Order
+import inc.crypto.domain.Order.Sell
+import inc.crypto.domain.Order.Buy
 
 class LiveOrderBoard {
     private val ordersBook = OrdersBook()

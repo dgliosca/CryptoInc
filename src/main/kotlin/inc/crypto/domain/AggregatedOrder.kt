@@ -1,4 +1,4 @@
-package inc.crypto
+package inc.crypto.domain
 
 sealed class AggregatedOrder(open val coinType: CoinType, open val quantity: Quantity, open val money: Money) {
     data class BuyOrders(
