@@ -9,8 +9,7 @@ data class AggregatedOrder(val coinType: CoinType, val quantity: Quantity, val m
             this.money != other.money -> {
                 throw IllegalArgumentException("Cannot sum orders with different money type: $money vs ${other.money}")
             }
-            else ->
-                this.copy(quantity = this.quantity + other.quantity)
+            else -> this.copy(quantity = this.quantity + other.quantity)
         }
     }
 }
