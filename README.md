@@ -1,4 +1,5 @@
-Interview exercise
+**Interview exercise**
+
 You are working for Crypto Inc. and we would like you to create a program to show the top 10 BUY or
 SELL orders in the Crypto Inc. marketplace.
 The Crypto Inc. 'Live Order Board' should support these features:
@@ -33,7 +34,8 @@ ways, just implement the one which seems most reasonable to you and if you could
 sentence) reasoning why you choose this way and not another one, it would be great
 
 
-Consideration/Assumptions
+**Consideration/Assumptions**
+
 The solution assumes that we are not dealing with tons of data (millions of orders) hence, we can calculate the 
 summary of buying/selling orders on the fly.
 An improved solution can be updating the buying/selling summary whenever an order gets booked or canceled.
